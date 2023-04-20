@@ -3,8 +3,9 @@ const express = require("express");
 const {MongoClient} = require("mongodb");
 dotenv.config();
 
-const url = "mongodb+srv://csewebservice:google419@cluster0.culjqpv.mongodb.net/test"
-// process.env.mongodb_URI;
+const url = process.env.MONGODB_URI;
+// || "mongodb+srv://csewebservice:google419@cluster0.culjqpv.mongodb.net/test"
+// 
 
 async function mongo() {
     let client = new MongoClient(url);
@@ -25,7 +26,7 @@ mongo();
 async function dataList(client) {
     let listDatabases = await client.db().admin().listDatabases();
     console.log("databases");
-    listDatabases.databases.collections.forEach((db) => {
+    listDatabases.databases.forEach((db) => {
         console.log("--", db);
     })
 }
