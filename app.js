@@ -11,7 +11,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(require("./routes/test"));
+app.use("/contacts", require("./routes/test"));
 
 app.listen(port, (req, res) => {
   console.log(`listening to port: ${port}`);

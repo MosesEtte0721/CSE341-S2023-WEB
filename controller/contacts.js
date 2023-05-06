@@ -1,4 +1,5 @@
 const mongodb = require("../db/mongoDB").mongoDb();
+const mongoDB = require("mongodb").ObjectId;
 // const express = require("express");
 // const app = express();
 
@@ -20,17 +21,36 @@ const allDoc = async (req, res) => {
       if (database) {
         res.status(200).json(list);
       } else {
-        res.status(404).send({ message: "Document(s) not found" });
+        res.status(404).send("<h4>Documents not found</h4>");
       }
       database.close();
     });
 };
 
-// const specificDoc = async (req, res, next) => {
-//     const database = await connect.db();
-//     const collection = await database.collection("contacts").findOne();
+// retrieve a single document from a collection
+const singleDoc = async (req, res, next) => {
+  const objectId = new mongoDB(req.params.id);
+  // const ObjectId = require('mongodb').ObjectId;
+  const database = await mongodb;
+  database
+    .db()
+    .collection("contacts")
+    .find({ _id: objectId})
+    // .find({_id: new ObjectId(req.params.id)});
+    .toArray()
+    .then((doc) => {
+      res.setHeader("Content-Type", "application/json");
+      // checks if the connection was successful
+      if (database) {
+        console.log("This is a string", doc);
+        res.status(200).json(doc);
+      } else {
+        res.status(404).send("<h4>Document not found</h4>");
+      }
+      database.close();
+    });
 
-//     next();
-// }
+ 
+};
 
-module.exports = { allDoc };
+module.exports = { allDoc, singleDoc };

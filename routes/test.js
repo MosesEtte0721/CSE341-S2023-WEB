@@ -4,7 +4,7 @@ const app = express();
 const router = express.Router();
 const allDoc = require("../controller/contacts");
 
-router.use(test);
+// router.use(test);
 
 router.use(require("./contact.js"));
 
