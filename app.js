@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoDb = require("./db/mongoDB");
 const port = process.env.PORT || 8080;
+const test = require("./controller/test.js");
+
 
 const app = express();
 
@@ -10,6 +12,8 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
+
+app.use(test);
 
 app.use("/contacts", require("./routes/test"));
 
