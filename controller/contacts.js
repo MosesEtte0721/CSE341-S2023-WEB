@@ -27,6 +27,7 @@ const allDoc = async (req, res) => {
     });
 };
 
+
 // retrieve a single document from a collection
 const singleDoc = async (req, res, next) => {
   const objectId = new mongoDB(req.params.id);
@@ -41,8 +42,7 @@ const singleDoc = async (req, res, next) => {
     .then((doc) => {
       res.setHeader("Content-Type", "application/json");
       // checks if the connection was successful
-      if (database) {
-        console.log("This is a string", doc);
+      if(database) {
         res.status(200).json(doc);
       } else {
         res.status(404).send("<h4>Document not found</h4>");
