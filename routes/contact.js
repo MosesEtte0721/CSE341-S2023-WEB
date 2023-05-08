@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const mong = require("../controller/contacts.js");
+const mong = require("../controller/contacts");
 
 const app = express();
 

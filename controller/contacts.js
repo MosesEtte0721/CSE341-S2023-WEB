@@ -1,11 +1,8 @@
 const mongodb = require("../db/mongoDB").mongoDb();
 const mongoDB = require("mongodb").ObjectId;
-// const express = require("express");
-// const app = express();
 
-// app.use(express.json)
 
-const allDoc = async (req, res) => {
+const allDoc = async (req, res, next) => {
   const database = await mongodb; // mongodb connection
   // finds collection from the profile database and converts the data to an array
   database
@@ -23,14 +20,15 @@ const allDoc = async (req, res) => {
       } else {
         res.status(404).send("<h4>Documents not found</h4>");
       }
-      database.close();
+      // database.close();
     });
+
 };
 
 
 // retrieve a single document from a collection
 const singleDoc = async (req, res, next) => {
-  const objectId = new mongoDB(req.params.id);
+  const objectId = new mongoDB(req.params.id).toString();
   // const ObjectId = require('mongodb').ObjectId;
   const database = await mongodb;
   database
@@ -47,10 +45,10 @@ const singleDoc = async (req, res, next) => {
       } else {
         res.status(404).send("<h4>Document not found</h4>");
       }
-      database.close();
+      // database.close();
     });
 
- 
+
 };
 
 module.exports = { allDoc, singleDoc };
