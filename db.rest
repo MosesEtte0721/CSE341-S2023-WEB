@@ -5,9 +5,8 @@ GET http://localhost:8080/
 GET http://localhost:8080/contacts
 ###
 
-GET http://localhost:8080/contacts/644bc27567c60a641e383ac4
-##
 
 ##
 GET https://string-wkh7.onrender.com/contacts/644bc27567c60a641e383ac4
 ##
+GET https://string-wkh7.onrender.com/contacts/

@@ -1,23 +1,24 @@
 {
-  "name": "cse341-s2023-web",
-  "version": "1.0.0",
-  "description": "WEB SERVICES",
-  "main": "app.js",
   "dependencies": {
     "build": "^0.1.4",
     "dotenv": "^16.0.3",
     "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
     "express": "^4.18.2",
     "mongodb": "^5.4.0",
     "nodemon": "^2.0.22",
     "npm": "^9.6.6",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "swagger-ui-express": "^4.6.3"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.1"
   },
   "scripts": {
     "start": "nodemon app.js",
+    "swagger-autogen": "node. ./app.js",
     "lint": "eslint *.js src/**/*.js",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
     "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
     "build": " build app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
