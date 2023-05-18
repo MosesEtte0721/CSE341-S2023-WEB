@@ -4,6 +4,7 @@ const app = express();
 const router = express.Router();
 const allDoc = require("../controller/contacts.js");
 
+router.use("/", require("./swagger.js"))
 router.use(test);
 
 router.use("/contacts", require("./contact"));

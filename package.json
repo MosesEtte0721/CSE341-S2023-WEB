@@ -11,7 +11,8 @@
     "mongodb": "^5.4.0",
     "nodemon": "^2.0.22",
     "npm": "^9.6.6",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "swagger-ui-express": "^4.6.3"
   },
   "scripts": {
     "start": "nodemon app.js",
@@ -23,5 +24,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Moses Ette",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "swagger-autogen": "^2.23.1"
+  }
 }

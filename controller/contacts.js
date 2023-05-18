@@ -111,7 +111,7 @@ const deleteContact = async (req, res) => {
   const connect = await database.db().collection("contacts").deleteOne({_id: objectId}, true);
   res.setHeader("Content-Type", "application/json")
   if(connect.deletedCount > 0) {
-    res.status(206).send()
+    res.status(200).send()
   } else{
     res.status(500).send(connect.error || "error occurred while deleting the document.")
   }
