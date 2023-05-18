@@ -6,7 +6,32 @@ GET http://localhost:8080/contacts
 ###
 
 
-##
+## 
 GET https://string-wkh7.onrender.com/contacts/644bc27567c60a641e383ac4
 ##
+## DEPLOYED: retrieve a all documents
+GET https://string-wkh7.onrender.com/contacts/
+##
+# creates a document in the collection
+POST http://localhost:8080/contacts HTTP/1.1
+content-type: application/json
+    {
+        "first_name": "Inem-Obong",
+        "last_name": "Ukeme",
+        "favourite_colour": "Red",
+        "birthday_day": "07/07/2023"
+    }
+#####
+# replaces data in a document
+PUT http://localhost:8080/contacts/645a5b27c64885a7f9b05383 HTTP/1.1
+content-type: application/json
+{
+    "first_name" : "Mistake",
+    "last_name" : "Fix",
+    "favourite_colour" : "No favourite colour"
+}
+
+# 
+DELETE http://localhost:8080/contacts/645a5b27c64885a7f9b05383
+# 
 GET https://string-wkh7.onrender.com/contacts/

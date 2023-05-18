@@ -11,6 +11,8 @@
     "npm": "^9.6.6",
     "prettier": "^2.8.8",
     "swagger-ui-express": "^4.6.3"
+    "prettier": "^2.8.8",
+    "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
     "swagger-autogen": "^2.23.1"
@@ -24,5 +26,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Moses Ette",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "swagger-autogen": "^2.23.1"
+  }
 }

@@ -52,4 +52,69 @@ const singleDoc = async (req, res, next) => {
 
 };
 
-module.exports = { allDoc, singleDoc };
+// creates a document in mongoDB database
+const createContact = async (req, res)=> {
+
+  const contact = {
+
+    first_name: req.body.first_name,
+
+    last_name: req.body.last_name,
+
+    favourite_colour: req.body.favourite_colour,
+
+    birth_day: req.body.birth_day,
+    email: req.body.email
+  }
+  console.log(contact);
+
+  const database = await mongodb;
+   const data = await database.db().collection("contacts").insertOne(contact);
+   console.log(data);
+  
+  if(data.acknowledged) {
+    console.log(`A document was inserted with the _id: ${data.insertedId}`);
+    res.status(201).json(data)
+  } 
+  else {
+    console.log("Failed! Document not inserted")
+    res.status(500).json(data.error || "An error occurred while creating the document")
+    
+  }
+
+}
+
+const updateContact = async (req, res)=> {
+
+  const contact = {
+    firs_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    favourite_colour: req.body.favourite_colour,
+    birth_day: req.body.birth_day
+
+  }
+  const objectId = new mongoDB(req.params.id)
+  const database = await mongodb;
+  const connect = await database.db().collection("contacts").replaceOne({_id: objectId}, contact);
+  res.setHeader("Content-Type", "application/json")
+  if(connect.modifiedCount > 0) {
+    res.status(204).send(connect);
+  } else {
+    res.status(500).json(connect.error || "error occurred while updating the document" )
+  }
+}
+
+const deleteContact = async (req, res) => {
+  const objectId = new mongoDB(req.params.id)
+  const database = await mongodb;
+  const connect = await database.db().collection("contacts").deleteOne({_id: objectId}, true);
+  res.setHeader("Content-Type", "application/json")
+  if(connect.deletedCount > 0) {
+    res.status(200).send()
+  } else{
+    res.status(500).send(connect.error || "error occurred while deleting the document.")
+  }
+}
+
+module.exports = { allDoc, singleDoc, createContact, updateContact, deleteContact};
