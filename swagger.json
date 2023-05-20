@@ -12,18 +12,8 @@
     "https"
   ],
   "paths": {
-    "/": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/contacts/": {
+   
+    "/bio/": {
       "get": {
         "description": "",
         "produces": [
@@ -33,9 +23,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           }
         }
       },
@@ -54,109 +41,47 @@
                 "last_name": {
                   "example": "any"
                 },
-                "favourite_colour": {
+                "car_brand": {
                   "example": "any"
                 },
-                "birth_day": {
+                "car_model": {
                   "example": "any"
                 },
-                "email": {
+                "occupation": {
+                  "example": "any"
+                },
+                "education": {
+                  "example": "any"
+                },
+                "DOB": {
+                  "example": "any"
+                },
+                "linkedin_profile": {
+                  "example": "any"
+                },
+                "convicted": {
+                  "example": "any"
+                },
+                "certification": {
+                  "example": "any"
+                },
+                "confident": {
+                  "example": "any"
+                },
+                "facebook": {
+                  "example": "any"
+                },
+                "facebook_profile": {
+                  "example": "any"
+                },
+                "instagram": {
+                  "example": "any"
+                },
+                "twitter": {
                   "example": "any"
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/contacts/{id}": {
-      "get": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "first_name": {
-                  "example": "any"
-                },
-                "last_name": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "favourite_colour": {
-                  "example": "any"
-                },
-                "birth_day": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {

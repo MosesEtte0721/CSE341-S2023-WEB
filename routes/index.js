@@ -4,9 +4,11 @@ const app = express();
 const router = express.Router();
 const allDoc = require("../controller/contacts.js");
 
-router.use("/", require("./swagger.js"))
-router.use(test);
 
-router.use("/contacts", require("./contact"));
+router.use("/", require("./swagger.js"))
+router.use("/bio", require("./bio"))
+// router.use(test);
+
+// router.use("/contacts", require("./contact"));
 
 module.exports = router;

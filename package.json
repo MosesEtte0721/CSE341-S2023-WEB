@@ -25,7 +25,8 @@
   },
   "author": "Moses Ette",
   "license": "ISC",
-  "devDependencies": {
-    "swagger-autogen": "^2.23.1"
-  }
+  "name": "cse341-s2023-web",
+  "description": "WEB SERVICES",
+  "version": "1.0.0",
+  "main": "app.js"
 }

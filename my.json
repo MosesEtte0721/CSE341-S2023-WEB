@@ -1,0 +1,25 @@
+{
+    
+    "first_name": "Moses",
+    "last_name": "Ette",
+    "car_brand": [
+        "mercedes", "BMW", "IVM"
+    ],
+    
+    "car_model": {"mercedes":["mercedes-benz G class 2023", "mercedes-benz E Class 2023", "mercedes-benz AMG Class 2023"],
+    "BMW":["BMW 3 Series", "BMW 4 Series", "BMW 5 Series", "BMW 6 Series", "BMW 7 Series", "BMW X1", "BMW X5","BMW X2", "BMW X6","BMW X7"],
+    "IVM": ["Innoson 6800", "Innoson G80", "Innoson FOX"]
+},
+    "occupation": "software development",
+    "education": "BYU-I",
+    "DOB": "none of your business",
+    "linkedin_profile": "https://www.linkedin.com/in/mosesette",
+    "certification": true,
+    "convicted": false,
+    "business_owner": true,
+    "confident": true,
+    "facebook": true,
+    "facebook_profile": null,
+    "instagram": true,
+    "twitter": true
+}
