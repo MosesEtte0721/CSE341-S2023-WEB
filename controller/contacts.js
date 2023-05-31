@@ -6,7 +6,7 @@ const allDoc = async (req, res, next) => {
   const database = await mongodb; // mongodb connection
   // finds collection from the profile database and converts the data to an array
   database
-    .db()
+    .db("profile")
     .collection("contacts")
     .find({})
     .toArray()
@@ -16,6 +16,7 @@ const allDoc = async (req, res, next) => {
       res.setHeader("Content-Type", "application/json");
       // send the successful status code and converts the data to JSON
       if (database) {
+         console.log()
         res.status(200).json(list);
       } else {
         res.status(404).send("<h4>Documents not found</h4>");
@@ -32,7 +33,7 @@ const singleDoc = async (req, res, next) => {
   // const ObjectId = require('mongodb').ObjectId;
   const database = await mongodb;
   database
-    .db()
+    .db("profile")
     .collection("contacts")
     .find({ _id: objectId})
     // .find({_id: new ObjectId(req.params.id)});
@@ -69,7 +70,7 @@ const createContact = async (req, res)=> {
   console.log(contact);
 
   const database = await mongodb;
-   const data = await database.db().collection("contacts").insertOne(contact);
+   const data = await database.db("profile").collection("contacts").insertOne(contact);
    console.log(data);
   
   if(data.acknowledged) {
@@ -96,7 +97,7 @@ const updateContact = async (req, res)=> {
   }
   const objectId = new mongoDB(req.params.id)
   const database = await mongodb;
-  const connect = await database.db().collection("contacts").replaceOne({_id: objectId}, contact);
+  const connect = await database.db("profile").collection("contacts").replaceOne({_id: objectId}, contact);
   res.setHeader("Content-Type", "application/json")
   if(connect.modifiedCount > 0) {
     res.status(204).send(connect);
