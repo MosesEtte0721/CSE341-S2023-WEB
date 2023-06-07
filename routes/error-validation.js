@@ -6,7 +6,7 @@ const validate = require("../validator").schema;
 
 router.get('/',  error.getObjects);
 router.get('/:id',  error.getObject);
-// router.put('/:id', validate, error.putObject);
+router.put('/:id', checkSchema(validate), error.putObject);
 router.post('/', checkSchema(validate), error.createObject);
 router.delete('/:id', error.deleteObject);
 

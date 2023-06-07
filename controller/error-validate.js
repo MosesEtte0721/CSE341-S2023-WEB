@@ -4,7 +4,11 @@ const {validationResult} = require("express-validator")
 
 const putObject = async (req, res) => {
   try {
-
+    const validate = validationResult(req);
+    if (validate.errors.length > 0 ) {
+      res.status(400).send(validate.errors);
+      return;
+    }
     const linkedin = {
       username: req.body.username,
       first_name: req.body.first_name,
@@ -101,11 +105,7 @@ const createObject = async (req, res) => {
       .db("week06")
       .collection("error-validate")
       .insertOne(info);
-      // const error = validationResult(req);
-      // if(!error.isEmpty){
-      //   res.status(422).send("bad attempt")
-      //   return;
-      // };
+      
 
     if (dbase.acknowledged) {
       res.setHeader("Content-Type", "application/json");
