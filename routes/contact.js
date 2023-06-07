@@ -9,7 +9,7 @@ router.get("/", mong.allDoc);
 // retrieved a single document from a collection in the mongoDB
 router.get("/:id", mong.singleDoc);
 // create and insert a new single document to a collection in the mongoDB
-router.post("/", mong.createContact)
+router.post("/", mong.createContact);
 
 router.put("/:id", mong.updateContact);
 
