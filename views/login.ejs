@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <header>
+
+    </header>
+    <main>
+        <form action="/login" method="POST">
+            <div>
+                <label for="username">Username:
+                    <input type="text" name="username" placeholder="Enter username" title="TYPE your username" required>
+                </label>
+                <label for="password" >Password:
+                    <input type="password" name="password" placeholder="Enter password" title="TYPE your password" required>
+                </label>
+                <button type="submit"> LOGIN </button>
+            </div>
+        </form>
+    
+        <p class="no_account">Don't have account? Login with</p>
+        <a href="/register">REGISTER HERE</a>
+        <p class="login_github"><a href="/githubOauth">Login github</a></p>
+        <p><a href="/logout">Logout</a></p>
+    </main>
+    <footer>
+
+    </footer>
+    
+</body>
+</html>

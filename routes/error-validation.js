@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const error = require("../controller/error-validate");
-const {checkSchema, validationResult} = require("express-validator")
+const {checkSchema} = require("express-validator");
 const validate = require("../validator").schema;
 
 router.get('/',  error.getObjects);
