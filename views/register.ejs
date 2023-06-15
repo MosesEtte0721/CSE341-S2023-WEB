@@ -12,6 +12,7 @@
     </header>
     <main>
         <form action="/register" method="POST">
+            <h1>Register</h1>
             <div>
                 <label for="username">Username:
                     <input type="text" name="username" placeholder="Enter username" title="TYPE your username" required>
@@ -27,13 +28,39 @@
         </form>
     
         <p class="no_account">Don't have account? Login with</p>
-        <a href="/login">Login</a>
+        <a href="/login-page">Login</a>
         <p class="login_github"><a href="/githubOauth">Login github</a></p>
         <p><a href="/logout">Logout</a></p>
     </main>
     <footer>
 
     </footer>
+
+    <script>
+        let form = document.querySelector("form");
+        form.addEventListener("submit", sendForm())
+
+        let email = form.email.value;
+        let username = form.username.value;
+        let password = form.password.value;
+
+        async function  sendForm(param){
+            param.preventDefault();
+            try {
+                const get = await fetch("/register",{
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({username, email, password})
+                })
+
+                const user = await get.json()
+                console.log(user)
+
+            } catch(error) {
+                console.log(error)
+            }
+        }
+    </script>
     
 </body>
 </html>

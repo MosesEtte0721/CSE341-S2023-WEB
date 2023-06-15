@@ -1,21 +1,27 @@
 const express = require("express");
-const mongoDb = require("./db/mongoDB");
-const envi = require("dotenv").config();
+const dbase = require("./db/mongoDB").mongoDb;
+const {checkSchema} = require("express-validator")
 const port = process.env.PORT || 8080;
-const test = require("./controller/test.js");
-const path = require("path")
 const bycrpt = require("bcryptjs");
-const store = require("store");
 const { default: axios } = require("axios");
-const jwt = require("jsonwebtoken");
 const session = require("express-session");
+const cookieParser = require("cookie-parser")
+const util = require("./util");
+const controller = require("./controller/log-reg");
+const valid = require("./validator");
+const validate = require("./validation-login");
+const logReg = require("./controller/log-reg")
+
 
 const app = express();
 app.use(session({
   secret: process.env.GITHUB_CLIENT_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  // cookie: {maxAge: 20000}
 }))
+
+app.use(cookieParser());
 
 app.use(express.json());
 // app.use(express.static("static"))
@@ -26,13 +32,6 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
 
-
-
-// console.log(storage.get("keg"));
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   next();
-// });
 
 app.use("/", require("./routes"));
 
@@ -52,80 +51,25 @@ const pro = (req, res, next) =>{
   }
 }
 
-app.get("/login", (req, res) => {
+app.get("/login-page", (req, res) => {
   res.render("login")
-  
 });
 
-app.get("/register", (req, res) => {
+app.get("/register",  (req, res) => {
   res.render("register")
 })
 
 
-app.post("/register", async (req, res) => {
+app.post("/register", checkSchema(valid.schema), logReg.register);
+
+
+app.post("/login", checkSchema(validate.schema), controller.login)
   
-  try {
-    // const {email, password, username} = req.body;
-    const hashedPassword = await bycrpt.hash(req.body.password, 15);
-
-    const user = {
-      _id: Date.now().toString()
-      , email: req.body.email
-      , password: hashedPassword
-      , username: req.body.username
-    }
-    
-    keglog.push(user);
-    store.set("keg", keglog);
-
-  } catch (error) {
-    res.status(500).send(error)
-    res.redirect("register")
-  }
-  
-  console.log(keglog);
-  res.render("login")
-});
-
-
-app.post("/login", async (req, res) => {
-  
-  const username = keglog.find((user) => {
-    user[0].username === req.body.username
-  })
-  
-  if(username == null) {
-    res.status(404).send("username does not exist")
-  }
-
-  try {
-    const compare = await bcrypt.compare(req.body.password, keg.password);
-    if(!compare) {
-      res.status(400).send("Incorrect password")
-    }
-
-    if(compare && username != null) {
-      delete keg.password;
-      const access_code = jwt.sign(
-        keg, 
-        process.env.GITHUB_CLIENT_SECRET, 
-        {expiresIn: 360 * 3000})
-
-      res.render("home")
-
-    }
-  } catch(error) {
-    res.status(500).send()
-  }
-  
-})
 
 app.get("/logout", pro, (req, res) => {
   req.session.token = null;
   res.redirect("/login")
 })
-
-
 
 // Redirects the user to gitHub authorization page
 app.get("/githubOauth", (req, res) => {
@@ -134,7 +78,6 @@ app.get("/githubOauth", (req, res) => {
 
 // 
 app.get("/callback", (req, res) => {
- 
   const {code} = req.query;
 
   const body = {
@@ -143,24 +86,14 @@ app.get("/callback", (req, res) => {
     code
   }
 
- const options = {headers:{accept: "application/json"}}
+ const options = {headers:{accept: "application/json"}};
+
  axios.post("https://github.com/login/oauth/access_token",body, options)
- .then((resp) => {req.session.token = resp.data.access_token
+ .then((resp) => {req.session.token = resp.data.access_token;
+
  res.redirect("/home")
 }).catch(err => {res.status(500).json({message:err.message})})
 
-  
-  // axios({
-  //   // method:"post",
-  //   url: `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${access_token}}`,
-    
-  // }).then((response) => {
-  //   // console.log("Inside the response");
-  //   access_code = response.data.access_token;
-  //   console.log(access_code);
-    
- 
-    // res.send("happy coding")
     res.render(`success`);
   })
   
@@ -168,6 +101,8 @@ app.get("/callback", (req, res) => {
 
 // console.log(access_code, "", "access code is here");
 app.get('/success', (req, res) => {
+  const access_code = req.query.code
+  console.log(access_code);
 
   axios({
     method: 'get',

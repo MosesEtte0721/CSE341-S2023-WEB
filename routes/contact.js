@@ -17,13 +17,13 @@ const pro = (req, res, next) =>{
     }
 }
 // gets multiple documents from a collection in the mongoDB
-router.get("/", pro, mong.allDoc);
+router.get("/",  mong.allDoc);
 // retrieved a single document from a collection in the mongoDB
-router.get("/:id", pro, mong.singleDoc);
+router.get("/:id",  mong.singleDoc);
 // create and insert a new single document to a collection in the mongoDB
-router.post("/", pro, mong.createContact);
+router.post("/",  mong.createContact);
 
-router.put("/:id", pro, mong.updateContact);
+router.put("/:id",  mong.updateContact);
 
 router.delete("/:id", mong.deleteContact);
 //

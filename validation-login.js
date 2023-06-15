@@ -2,18 +2,6 @@ const valid = require("express-validator").checkSchema;
 
 const schema = {
 
-  username: {
-
-      isAlphanumeric: {errorMessage: "username should contain string and and numbers "},
-      notEmpty: {errorMessage: "username must not be empty"},
-      
-      isLength: {options: {
-        min: 6, 
-      }
-      }
-  },
-
-
   email: {
     errorMessage: "Email must be more than 9 characters",
     isEmail: {errorMessage: "NOT a valid Email"}, 
@@ -39,11 +27,12 @@ const schema = {
 
 const validate = (next)=> {
   valid(schema);
- 
+  
 }
 
 
 module.exports = {
-  validate,
+  validate, 
   schema
+
 }
