@@ -59,6 +59,10 @@ app.get("/register",  (req, res) => {
   res.render("register")
 })
 
+app.get("/home",  (req, res) => {
+  res.render("home")
+})
+
 
 app.post("/register", checkSchema(valid.schema), logReg.register);
 

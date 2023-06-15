@@ -22,6 +22,7 @@ const login = async (req, res) => {
         try {
 
             const dbase = await database;
+            // loops through the collection in the database and returns  
             const dbColl = await dbase.db("wk8project").collection("userData").find().toArray().then((list) => {
                 const loop = list.filter((x)=> { return x.email, x.password})
                 return loop; 
@@ -29,24 +30,30 @@ const login = async (req, res) => {
             // 
             // gets all documents in the collection
             const documents = dbColl.filter((emel) => {return emel});
-            // gets all the passwords in the collection
-            const passwords = documents.map((x) => {return x.password})
-            // gets all the email that matches with the user input
-            const emails = documents.find((x) => {return x.email === coll.email})
-            // 
+           
+            // compares and returns email that matches with the user input
+            const userEmail = documents.find((x) => {return x.email === coll.email})
             
 
-            if(emails) {
-                const auth = await bcrypt.compare(coll.password, passwords)
-                if(auth){
-                    res.status(200).send("password matches")
-                } {
-                    res.status(400).send("not match found")
-                }
+            if(userEmail) {
+                // the user hashed password
+                const hashedPassword = userEmail.password
                 
-                res.send(emails)
-            } else {
-                res.send("email not match")
+                // compares new password to the hashed password in the database
+                const auth = await bcrypt.compare(coll.password, hashedPassword)
+                if(auth){
+                    res.status(200).redirect("/home")
+                } 
+                else{
+                        console.log("password not found")
+                        res.status(400).redirect("/register")
+                    throw Error("Invalide password. Please enter correct password")
+
+                    }
+                
+            } 
+            else {
+                res.status(404).redirect("/register")
             }
 
         } catch(error) {
