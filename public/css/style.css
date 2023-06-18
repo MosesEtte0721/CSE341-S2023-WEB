@@ -1,0 +1,210 @@
+body {
+    background-color: rgb(243, 232, 232);
+}
+
+a {
+    text-decoration:  none;
+    font-size: 20px;
+    
+}
+
+.bio a {
+    font-size: 16px;
+}
+
+img {
+    max-width: 100%;
+}
+picture {
+    max-width: 50%;
+}
+
+.bold-para {
+    font-weight: bold;
+}
+
+.github, .sign-up {
+    background-color: black;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+
+
+form {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.reg-form h1, .log-form h1 {
+    text-align: center;
+}
+
+button[type=submit] {
+    background-color: gold;
+    font-size: 15px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+label {
+    margin: 10px;
+    padding: 0;
+    font-size: 18px;
+
+}
+
+button[type=submit] {
+    padding: 8px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+input {
+    max-width: 100%;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.reg-form, .log-form {
+    max-width: 100%; 
+    margin: 0 auto;
+}
+
+input::placeholder {
+    text-align: center;
+    font-size: 16px;
+   }
+   
+   .github, .sign-up {
+    background-color: black;
+    color: #ffffff;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 5px 3px;
+}
+
+
+@media screen and (min-width: 250px) {
+    .reg-form, .log-form {
+        max-width: 100%; 
+        margin: 0 auto;
+       
+    }
+
+    label {
+        display: flex;
+        flex-flow: column wrap;
+        margin: 8px;
+        padding: 0;
+        font-size: 18px;
+    
+    }
+
+
+    button[type=submit] {
+        padding: 8px;
+        margin: 0 auto;
+        width: 50%;
+        
+        
+    }
+    
+    input {
+        max-width: 100%;
+        border-radius: 10px;
+        font-size: 16px;
+        padding: 10px;
+    }
+    
+
+   
+.alt-login {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin: 20px;
+     
+}
+
+.form-div {
+    display: flex;
+    flex-flow: column wrap; 
+    
+}
+
+.github, .sign-up {
+    background-color: black;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px ;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    text-align: center;
+}
+
+}
+
+@media screen and (min-width: 471px) {
+   
+    .reg-form, .log-form {
+        width: 80%; 
+        margin: 0 auto;
+    }
+    
+    
+    button[type=submit] {
+        background-color: gold;
+        font-size: 15px;
+        border-radius: 20px;
+        padding: 10px;
+        margin: 0 auto;
+        font-weight: bold;
+    }
+    
+    .alt-login {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        margin: 5px;
+         
+    }
+    
+    input {
+        border-radius: 20px;
+        font-size: 18px;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    input::placeholder {
+     text-align: center;
+    }
+    
+    
+}
+
+@media screen and (min-width: 575px) {
+    .reg-form, .log-form {
+        max-width: 75%; 
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .reg-form, .log-form {
+        max-width: 40%; 
+        margin: 0 auto;
+    }
+
+    input[type=submit] {
+        max-width: 100%;
+    }
+}

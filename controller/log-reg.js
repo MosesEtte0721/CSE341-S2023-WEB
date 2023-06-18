@@ -42,18 +42,25 @@ const login = async (req, res) => {
                 // compares new password to the hashed password in the database
                 const auth = await bcrypt.compare(coll.password, hashedPassword)
                 if(auth){
+                    // deletes password after successfull comparison
+                    delete hashedPassword
+                    // signs with JWT 
+                    const signJwt = jwt.sign(userEmail, process.env.GITHUB_CLIENT_SECRET, {expiresIn: 3000 * 24 * 60 * 60 * 30000})
+                    // stores in the cookies
+                    res.cookie("jwt", signJwt, {maxAge: 3000 * 24 * 60 * 60 * 30000, httpOnly: true})
+                    // redirects to the home page
                     res.status(200).redirect("/home")
+                    // return userEmail;
                 } 
-                else{
-                        console.log("password not found")
-                        res.status(400).redirect("/register")
-                    throw Error("Invalide password. Please enter correct password")
-
-                    }
+                else { 
+                    res.status(400).redirect("/register")
+                    throw Error("Invalid password. Please enter correct password")
+                }
                 
             } 
             else {
                 res.status(404).redirect("/register")
+                throw Error("Incorrect Email")
             }
 
         } catch(error) {
@@ -126,9 +133,10 @@ const register = async (req, res) => {
         // checks if insertion was successfull
         if(dbCollection.acknowledged){
             // uses jsonwebtoken to sign the data inserted
-            const sign = jwtSign(data, env);
-            res.cookie("jwt", sign, {maxAge: 300 * 24 * 60 * 60})
+            const sign = jwtSign(data, env, 300 * 24 * 60 * 60 * 30000 );
+            res.cookie("jwt", sign, {maxAge: 300 * 24 * 60 * 60 * 30000});
             res.setHeader("Content-Type", "application/json")
+
             // return the status and redirect to login page
             res.status(201).redirect("/login-page");
             
@@ -144,8 +152,8 @@ const register = async (req, res) => {
     }
 };
 
-function jwtSign(data, secret) {
-    const sign = jwt.sign(data, secret, {expiresIn: 300 * 24 * 60 * 60});
+function jwtSign(data, secret, num) {
+    const sign = jwt.sign(data, secret, num);
     return sign;
 }
 

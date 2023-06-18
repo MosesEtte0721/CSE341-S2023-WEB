@@ -8,62 +8,42 @@ const database = async () => {
   };
 
 const jwtAuth = (req, res, next) => {
-    try{
-        const cookToken = req.session.token;
-        const headers = req.headers["authorization"];
-        const token = headers.splice('')[1];
-        const authenticate = jwt.verify(token, env.process.GITHUB_CLIENT_ID, (error, fn) => {
-            if(error) {
-                return res.status(404).json({message: error.message})
+ 
+        // retrieves  signed data from the cookie 
+        const cookieToken = req.cookies.jwt;
+        console.log("cookie", cookieToken)
+        const  sessionToken = req.session.token;
+        console.log("sessionToken", sessionToken);
+
+        
+        if(cookieToken) {
+            const authenticate = jwt.verify(cookieToken, process.env.GITHUB_CLIENT_ID)
+            if(authenticate) {
+                res.send(cookieToken)
+                next()
+            } else {
+                res.redirect("/login-page")
             }
-            req.fn = fn;
             
-        });
+                
+        }
+        
+    } 
 
-    } catch(error) {
 
+
+const logout = (res, req, next) => {
+    const  jwToken = req.cookies.jwt;
+    const  sessionToken = req.session.token;
+    if(jwToken ) {
+        res.clearCookie("jwt").redirect("/login");
     }
+    
 }
 
-const nativeAuth = (req, res, database, next) => {
-
-    // loops through the collection of the database and returns the email and password from the database
-    const dbColl = database.map((doc) => {
-        // doc.username,
-        doc.email,
-        doc.password
-    });
-
-    // input from the user for login
-    const newLog = {
-        // username: req.body.username,
-        email: req.body.email,
-        password: req.body.password
-    }
-
-    try{
-        // authenticate the user inputs and returns if there are matches
-        const search = dbColl.map((docs) => {
-            // docs.username === newLog.username;
-            docs.email === newLog.email;
-            docs.password === newLog.password;
-        });
-        // returns error message if the inputs do not match
-        if(search == null || undefined) {
-            throw new Error("Incorrect credentials")
-        }else {
-            delete dbColl.password;
-            next();
-        }
-        } catch(error) {
-            res.status(404).json({message: error.message})
-        }
-
-
-}
 
 
 module.exports = {
     jwtAuth,
-    nativeAuth
+    logout
 }

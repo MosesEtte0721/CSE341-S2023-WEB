@@ -5,30 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="../public/css/style.css">
 </head>
 <body>
     <header>
 
     </header>
     <main>
-        <form action="/login" method="POST">
-            <h1>Login</h1>
-            <div>
-                <label for="username">Email:
-                    <input type="email" name="email" placeholder="Enter email" title="TYPE your email" required>
-                </label>
-                <label for="password" >Password:
-                    <input type="password" name="password" placeholder="Enter password" title="TYPE your password" required>
-                </label>
-                <button type="submit"> LOGIN </button>
-            </div>
-        </form>
-    
-        <p class="no_account">Don't have account? Login with</p>
-        <a href="/register">REGISTER HERE</a>
-        <p class="login_github"><a href="/githubOauth">Login github</a></p>
-        <p><a href="/logout">Logout</a></p>
-    </main>
+        <div class="log-form">
+            <%- include("../partials/html/login.html"); -%>
+        </div>
+   </main>
     <footer>
 
     </footer>
