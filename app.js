@@ -38,9 +38,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", require("./routes"));
 
-// app.get("/login", (req, res) => {
-//   res.sendFile((__dirname, "/reg-form/login.html"))
-// })
+
 const pro = (req, res, next) =>{
   try{
       if(req.session.token) {
@@ -69,16 +67,15 @@ app.get("/home",  (req, res) => {
   res.render("home")
 })
 
-// redirects to the profile page
-// app.post("/profile", checkSchema(valid.schema), util.jwtAuth, logReg.  profile)
-
 // Registration or sign up page
 app.post("/register", checkSchema(valid.schema), logReg.register);
 
 // Login page
 app.post("/login", checkSchema(validate.schema), controller.login)
   
-// Logout page
+// logs out 
+app.get("/logout", util.jwtAuth, util.logout)
+
 // app.get("/logout",  util.logout, (req, res) => {
 //   req.session.token = null;
 //   res.redirect("/login")
@@ -91,26 +88,31 @@ app.get("/githubOauth", (req, res) => {
 
 // landing page after Oauth 
 app.get("/callback", (req, res) => {
-  const {code} = req.query;
+  const requestToken = req.query.code;
+  
 
   const body = {
     client_id: process.env.GITHUB_CLIENT_ID,
     client_secret: process.env.GITHUB_CLIENT_SECRET,
     code
   }
+  const client_id = process.env.GITHUB_CLIENT_ID;
+  const client_secret = process.env.GITHUB_CLIENT_SECRET;
 
  const options = {headers:{accept: "application/json"}};
 
- axios.post("https://github.com/login/oauth/access_token",body, options)
- .then((resp) => {req.session.token = resp.data.code;
-
- res.redirect("/home")
+ axios.post(`https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${requestToken}`)
+ .then((resp) => {
+  res.cookie("access_code", resp.data.code) 
+  console.log(req.query.code);
+ res.redirect("home")
 }).catch(err => {res.status(500).json({message:err.message})})
 
-    res.redirect(`/success`);
+console.log(req.session.token);
   })
   
 // })
+
 
 // success page
 app.get('/success', util.jwtAuth, (req, res) => {

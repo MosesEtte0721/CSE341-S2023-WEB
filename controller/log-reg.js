@@ -133,11 +133,11 @@ const register = async (req, res) => {
         // checks if insertion was successfull
         if(dbCollection.acknowledged){
             // uses jsonwebtoken to sign the data inserted
-            const sign = jwtSign(data, env, 300 * 24 * 60 * 60 * 30000 );
-            res.cookie("jwt", sign, {maxAge: 300 * 24 * 60 * 60 * 30000});
-            res.setHeader("Content-Type", "application/json")
+            const sign = await jwtSign(data, env);
+            res.cookie("jwt", sign);
+            // res.setHeader("Content-Type", "application/json")
 
-            // return the status and redirect to login page
+            // return the status and redirect to login page , {maxAge: 300 * 24 * 60 * 60 * 30000}
             res.status(201).redirect("/login-page");
             
         }
@@ -152,8 +152,8 @@ const register = async (req, res) => {
     }
 };
 
-function jwtSign(data, secret, num) {
-    const sign = jwt.sign(data, secret, num);
+function jwtSign(data, secret) {
+    const sign = jwt.sign(data, secret);
     return sign;
 }
 
