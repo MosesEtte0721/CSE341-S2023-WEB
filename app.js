@@ -34,6 +34,7 @@ app.use("/public", express.static("public"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
+console.log(checkSchema(valid.schema));
 
 
 app.use("/", require("./routes"));

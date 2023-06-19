@@ -16,7 +16,7 @@ const login = async (req, res) => {
      
     const coll = {
                 email: req.body.email,
-                password: req.body.password
+                password: req.body.password,
     }
      
         try {
@@ -45,9 +45,9 @@ const login = async (req, res) => {
                     // deletes password after successfull comparison
                     delete hashedPassword
                     // signs with JWT 
-                    const signJwt = jwt.sign(userEmail, process.env.GITHUB_CLIENT_SECRET, {expiresIn: 3000 * 24 * 60 * 60 * 30000})
+                    const signJwt = jwt.sign(userEmail, process.env.GITHUB_CLIENT_SECRET)
                     // stores in the cookies
-                    res.cookie("jwt", signJwt, {maxAge: 3000 * 24 * 60 * 60 * 30000, httpOnly: true})
+                    res.cookie("jwt", signJwt)
                     // redirects to the home page
                     res.status(200).redirect("/home")
                     // return userEmail;
@@ -72,42 +72,12 @@ const login = async (req, res) => {
 
     
 
-//     try {
-//         
-        
-
-//          {
-//         if(dbColl) {
-//             // const loop = dbColl.for(i in coll){
-                
-//             // }
-//             // if(coll.email === dbColl.email){
-//             //     console.log(dbColl)
-//             //     res.send("password matches");
-//             // }
-//             // else{
-//             //     res.status(404).send("FAILED! could not find match")
-//             // }
-            
-//             res.status(200).json(callback);
-//             res.render("welcome")
-//         }
-//         else{
-//             res.status(404).send("NOT FOUND")
-//             throw new Error("ERROR OCCURRED")
-//         }
-//     })
-//    } catch(err) {
-//         res.status(500).json({message: err.message})
-//    }
-// }
 
 
 // validate data, hash password,signs with JWT, and insert data into the database
 const register = async (req, res) => {
     // executes data validation
     let result = validationResult(req);
-
     // returns error message if the data does not match the requirement
     if(result.errors.length > 0){
       res.status(444).send(result.errors)
@@ -119,10 +89,15 @@ const register = async (req, res) => {
     const data = {
         email: req.body.email,
         password: hashedPassword,
-        username: req.body.username
-    };
+        username: req.body.username,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        profession: req.body.profession,
+        country: req.body.country,
+        phone: req.body.phone
+    }
+    
     const env = process.env.GITHUB_CLIENT_SECRET;
-
     // handles error
     try{
         // connects to the mongDb
