@@ -10,6 +10,7 @@ const util = require("./util");
 const controller = require("./controller/log-reg");
 const valid = require("./validator");
 const validate = require("./validation-login");
+const validUpdate = require("./validation-update");
 const logReg = require("./controller/log-reg")
 
 
@@ -40,19 +41,6 @@ console.log(checkSchema(valid.schema));
 app.use("/", require("./routes"));
 
 
-const pro = (req, res, next) =>{
-  try{
-      if(req.session.token) {
-          next();
-      
-      }else{
-          throw new Error("Please login to access this page")
-      }
-  }catch(error){
-      res.status(500).json({message: error.message})
-  }
-}
-
 // displays the login page
 app.get("/login-page", (req, res) => {
   res.render("login")
@@ -66,7 +54,8 @@ app.get("/register",  (req, res) => {
 // home page
 app.get("/home",  (req, res) => {
   res.render("home")
-})
+}) 
+
 
 // Registration or sign up page
 app.post("/register", checkSchema(valid.schema), logReg.register);
@@ -75,7 +64,22 @@ app.post("/register", checkSchema(valid.schema), logReg.register);
 app.post("/login", checkSchema(validate.schema), controller.login)
   
 // logs out 
-app.get("/logout", util.jwtAuth, util.logout)
+app.get("/logout", util.jwtAuth, util.logout);
+
+app.get("/getUsers",  logReg.allUsers);
+app.get("/getUser/:id", logReg.user)
+
+app.put("/updateUser/:id", checkSchema(validUpdate.schema), util.jwtAuth, logReg.updateUser);
+
+app.put("/home",  (req, res) => {
+  res.render("home")
+}) ;
+
+app.delete("/deleteUser/:id", util.jwtAuth, logReg.eraseUser);
+app.delete("/home",  (req, res) => {
+  res.render("home")
+}) 
+
 
 // app.get("/logout",  util.logout, (req, res) => {
 //   req.session.token = null;

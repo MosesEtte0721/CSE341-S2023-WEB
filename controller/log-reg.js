@@ -3,24 +3,74 @@ const database = require("../db/mongoDB").mongoDb();
 const jwt = require("jsonwebtoken");
 const env = require("dotenv").config()
 const bcrypt = require("bcryptjs");
-const {validationResult} = require("express-validator")
+const {validationResult} = require("express-validator");
+const paramId = require("mongodb").ObjectId;
+
+
+
+
+const allUsers = async (req, res, next) => {
+    const dbase = await database; // mongodb connection
+    // finds collection from the profile database and converts the data to an array
+    dbase
+      .db("wk8project")
+      .collection("userData")
+      .find()
+      .toArray()
+      .then((list) => {
+        // sets the data type of the data retrieved
+
+        // send the successful status code and converts the data to JSON
+        if (dbase) {
+          res.status(200).json(list);
+        } else {
+          res.status(404).send("<h4>Documents not found</h4>");
+        }
+        // database.close();
+      });
+  };
+  
+  // retrieve a single document from a collection
+  const user = async (req, res, next) => {
+    const param_id = new paramId(req.params.id);
+  
+    const dbase = await database;
+    dbase
+      .db("wk8project")
+      .collection("userData")
+      .find({ _id: param_id })
+      // .find({_id: new ObjectId(req.params.id)});
+      .toArray()
+      .then((doc) => {
+        res.setHeader("Content-Type", "application/json");
+        // checks if the connection was successful
+        if (dbase) {
+          // console.log("This is a doucment from a collection")
+          res.status(200).json(doc);
+        } else {
+          res.status(404).send("<h4>Document not found</h4>");
+        }
+        // database.close();
+      });
+  };
+
 
 const login = async (req, res) => {
-
+    // implements data validation from express-validator
     const validation = validationResult(req);
-
+    // sends error messages resulting in wrong input by the user
     if(validation.errors.length > 0) {
         res.status(400).json({message: validation.errors});
         return;
     }
-     
+    // user inputs or data
     const coll = {
                 email: req.body.email,
                 password: req.body.password,
     }
-     
-        try {
 
+        try {
+            // mongoClient
             const dbase = await database;
             // loops through the collection in the database and returns  
             const dbColl = await dbase.db("wk8project").collection("userData").find().toArray().then((list) => {
@@ -29,16 +79,12 @@ const login = async (req, res) => {
             })
             // 
             // gets all documents in the collection
-            const documents = dbColl.filter((emel) => {return emel});
-           
+            const documents = dbColl.filter((emel) => {return emel}); 
             // compares and returns email that matches with the user input
-            const userEmail = documents.find((x) => {return x.email === coll.email})
-            
-
+            const userEmail = documents.find((x) => {return x.email === coll.email});
             if(userEmail) {
                 // the user hashed password
                 const hashedPassword = userEmail.password
-                
                 // compares new password to the hashed password in the database
                 const auth = await bcrypt.compare(coll.password, hashedPassword)
                 if(auth){
@@ -55,24 +101,16 @@ const login = async (req, res) => {
                 else { 
                     res.status(400).redirect("/register")
                     throw Error("Invalid password. Please enter correct password")
-                }
-                
+                } 
             } 
             else {
                 res.status(404).redirect("/register")
                 throw Error("Incorrect Email")
             }
-
         } catch(error) {
             res.status(500).json({message: error.message})
         }
-
 }
-   
-
-    
-
-
 
 // validate data, hash password,signs with JWT, and insert data into the database
 const register = async (req, res) => {
@@ -96,7 +134,7 @@ const register = async (req, res) => {
         country: req.body.country,
         phone: req.body.phone
     }
-    
+
     const env = process.env.GITHUB_CLIENT_SECRET;
     // handles error
     try{
@@ -127,12 +165,72 @@ const register = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res, next) => {
+    // uses bcryptjs to hash the password
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const data = {
+        password: hashedPassword,
+        email: req.body.email,
+        username: req.body.username,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        profession: req.body.profession,
+        country: req.body.country,
+        phone: req.body.phone
+    };
+   try {
+
+    const param_id = new paramId(req.params.id)
+    const dbase = await database;
+    const collection = dbase
+        .db("wk8project")
+        .collection("userData")
+        .replaceOne({ _id: param_id }, data);
+
+    if(collection.modifiedCount > 0) {
+        res.status(201).redirect("/success")
+    } else {
+        res.status(404).redirect("/home")
+    }
+
+   } catch(error) {
+    res.status(500).redirect("/home")
+   }
+}
+
 function jwtSign(data, secret) {
     const sign = jwt.sign(data, secret);
     return sign;
 }
 
+
+const eraseUser =  async (req, res, next) => {
+    
+
+    const param_id = new paramId(req.params.id);
+
+    try {
+       
+        const dbase = await database;
+        const collection = dbase.db("wk8project").collection("userData").deleteOne({_id: param_id}, true);
+        res.setHeaders("Content-Type", "application/json")
+        if(collection.deletedCount > 0) {
+            req.cookie("jwt", "", { maxAge: "1" });
+            res.status(200).redirect("/register");
+        } else {
+            res.status(400).redirect("/home")
+        }
+
+    } catch(err) {
+        res.status(500).redirect("/home")
+    }
+}
+
 module.exports = {
     login,
-    register
+    register,
+    eraseUser,
+    updateUser,
+    user,
+    allUsers
 }
