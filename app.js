@@ -96,11 +96,7 @@ app.get("/callback", (req, res) => {
   const requestToken = req.query.code;
   
 
-  const body = {
-    client_id: process.env.GITHUB_CLIENT_ID,
-    client_secret: process.env.GITHUB_CLIENT_SECRET,
-    code
-  }
+  
   const client_id = process.env.GITHUB_CLIENT_ID;
   const client_secret = process.env.GITHUB_CLIENT_SECRET;
 
